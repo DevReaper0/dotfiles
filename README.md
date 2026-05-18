@@ -1,15 +1,42 @@
 # Dotfiles
 
-This repository stores my dotfiles
+This repository stores my dotfiles.
+
+## Requirements
+
+Ensure you have the following installed on your system:
+
+### Git
+
+```
+pacman -S git
+```
+
+### Stow
+
+```
+pacman -S stow
+```
 
 ## Installation
-1. Run the following commands:
+
+First, check out the repository in your home directory:
+
 ```sh
-alias dotfile='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
-echo ".cfg" >> .gitignore
-git clone --bare https://github.com/DevReaper0/dotfiles.git $HOME/.cfg
-mkdir -p .config-backup && dotfile checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
-dotfile checkout
-dotfile config --local status.showUntrackedFiles no
+cd ~
+git clone https://github.com/DevReaper0/dotfiles.git
+cd dotfiles
 ```
-2. Run `nvim +PlugInstall +q2`
+
+Then, use GNU Stow to create symbolic links for the dotfiles:
+
+```sh
+stow .
+```
+
+Finally, install Neovim and tmux plugins:
+
+```sh
+nvim +PlugInstall +q2
+tmux # Press `Ctrl + a`, then `I`.
+```
