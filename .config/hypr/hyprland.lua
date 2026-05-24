@@ -330,6 +330,22 @@ hl.bind(mainMod .. " + SHIFT + F", hl.dsp.window.fullscreen({ mode = "maximized"
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
+-- Resize with locked aspect ratio
+local aspectRatioRule = hl.window_rule({
+	name = "aspect-ratio-resize",
+	enabled = false,
+	match = { focus = true },
+
+	keep_aspect_ratio = true,
+})
+hl.bind(mainMod .. " + SHIFT + mouse:273", function()
+	aspectRatioRule:set_enabled(true)
+	hl.dispatch(hl.dsp.window.resize())
+end, { mouse = true })
+hl.bind(mainMod .. " + SHIFT + mouse:273", function()
+	aspectRatioRule:set_enabled(false)
+end, { mouse = true, release = true })
+
 hl.bind(mainMod .. " + T", hl.dsp.window.pin())
 hl.bind(mainMod .. " + Y", hl.dsp.window.tag({ tag = "nodim" }))
 
