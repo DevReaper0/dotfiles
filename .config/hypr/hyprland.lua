@@ -157,8 +157,6 @@ hl.config({
 	},
 })
 
--- TODO: Speed up window opening and closing animations a bit (and some others)
-
 hl.curve("easeOutQuint", { type = "bezier", points = { { 0.23, 1 }, { 0.32, 1 } } })
 hl.curve("easeInOutCubic", { type = "bezier", points = { { 0.65, 0.05 }, { 0.36, 1 } } })
 hl.curve("linear", { type = "bezier", points = { { 0, 0 }, { 1, 1 } } })
@@ -256,7 +254,6 @@ hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("hyprlock"), { submap_universal = tru
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 hl.bind(mainMod .. " + SHIFT + Q", hl.dsp.window.kill())
--- hl.bind(mainMod .. " + SHIFT + Q", hl.dsp.exec_cmd("hyprctl activewindow | grep pid | tr -d 'pid:' | xargs kill"))
 
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit")) -- dwindle only
@@ -323,9 +320,6 @@ hl.bind(mainMod .. " + SHIFT + C", hl.dsp.workspace.toggle_special(""))
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ mode = "fullscreen", action = "toggle" }))
 hl.bind(mainMod .. " + SHIFT + F", hl.dsp.window.fullscreen({ mode = "maximized", action = "toggle" }))
 
--- hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("~/.config/hypr/scripts/toggle_bar.sh"))
--- hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("pkill desktopshell || " .. desktopShell))
-
 -- Move/resize windows with mainMod + LMB/RMB and dragging
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
@@ -379,8 +373,7 @@ hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = tru
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
 
 local touchpadsEnabled = true
--- XF86TouchpadToggle isn't working for some reason, but CTRL+SUPER+F24 is triggering.
-hl.bind("CTRL + SUPER + F24", function()
+local function toggleTouchpads()
 	touchpadsEnabled = not touchpadsEnabled
 	for _, device in ipairs(touchpadDevices) do
 		hl.device({
@@ -388,7 +381,10 @@ hl.bind("CTRL + SUPER + F24", function()
 			enabled = touchpadsEnabled,
 		})
 	end
-end, { locked = true })
+end
+hl.bind("XF86TouchpadToggle", toggleTouchpads, { locked = true })
+-- XF86TouchpadToggle hasn't been working for me for some reason, but CTRL+SUPER+F24 is triggering.
+hl.bind("CTRL + SUPER + F24", toggleTouchpads, { locked = true })
 
 hl.bind("Print", hl.dsp.exec_cmd("hyprshot -m region"))
 hl.bind("SHIFT + Print", hl.dsp.exec_cmd("hyprshot -m window"))
@@ -450,8 +446,6 @@ hl.window_rule({
 hl.window_rule({
 	match = { class = "firefox|zen", title = "Picture-in-Picture" },
 
-	-- no_blur = true,
-	-- no_dim = true,
 	tag = "nodim",
 	float = true,
 	pin = true,
