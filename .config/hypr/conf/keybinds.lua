@@ -43,13 +43,16 @@ for i = 1, 10 do
 end
 
 -- This is necessary to prevent workspace switching keybinds from occasionally triggering.
--- It acts the same as modifier keys do.
+-- It makes grave (`) act the same as a modifier key.
 hl.bind(mainMod .. " + grave", hl.dsp.submap("mod_grave"))
-hl.bind(mainMod .. " + grave", function()
+hl.bind(mainMod .. " + SHIFT + grave", hl.dsp.submap("mod_grave"))
+-- Handles releasing grave first.
+hl.bind("grave", function()
 	if hl.get_current_submap() == "mod_grave" then
 		hl.dispatch(hl.dsp.submap("reset"))
 	end
-end, { release = true, transparent = true })
+end, { release = true, auto_consuming = true, transparent = true, ignore_mods = true })
+-- Handles releasing mainMod first.
 hl.bind("grave + " .. mainMod .. "_L", function()
 	if hl.get_current_submap() == "mod_grave" then
 		hl.dispatch(hl.dsp.submap("reset"))
@@ -59,6 +62,7 @@ hl.define_submap("mod_grave", function()
 	for i = 1, 10 do
 		local key = i % 10
 		hl.bind(mainMod .. " + grave + " .. key, hl.dsp.exec_cmd("hyprgroups group switch -- " .. i))
+		hl.bind(mainMod .. " + SHIFT + grave + " .. key, hl.dsp.exec_cmd("hyprgroups group move -- " .. i))
 	end
 end)
 
