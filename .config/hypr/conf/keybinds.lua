@@ -45,16 +45,21 @@ end
 -- This is necessary to prevent workspace switching keybinds from occasionally triggering.
 -- It acts the same as modifier keys do.
 hl.bind(mainMod .. " + grave", hl.dsp.submap("mod_grave"))
+hl.bind(mainMod .. " + grave", function()
+	if hl.get_current_submap() == "mod_grave" then
+		hl.dispatch(hl.dsp.submap("reset"))
+	end
+end, { release = true, transparent = true })
+hl.bind("grave + " .. mainMod .. "_L", function()
+	if hl.get_current_submap() == "mod_grave" then
+		hl.dispatch(hl.dsp.submap("reset"))
+	end
+end, { release = true, transparent = true, ignore_mods = true })
 hl.define_submap("mod_grave", function()
 	for i = 1, 10 do
 		local key = i % 10
-		hl.bind(tostring(key), hl.dsp.exec_cmd("hyprgroups group switch -- " .. i))
 		hl.bind(mainMod .. " + grave + " .. key, hl.dsp.exec_cmd("hyprgroups group switch -- " .. i))
 	end
-	hl.bind(mainMod .. " + grave", hl.dsp.submap("reset"), { release = true, transparent = true })
-	hl.bind(mainMod .. " + " .. mainMod .. "_L", hl.dsp.submap("reset"), { release = true, transparent = true })
-	hl.bind("grave", hl.dsp.submap("reset"), { release = true, transparent = true })
-	hl.bind("catchall", hl.dsp.submap("reset"))
 end)
 
 hl.bind(mainMod .. " + minus", hl.dsp.exec_cmd("hyprgroups workspace switch -- -1"))
