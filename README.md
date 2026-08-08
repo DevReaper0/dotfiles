@@ -4,18 +4,10 @@ This repository stores my dotfiles.
 
 ## Requirements
 
-Ensure you have the following installed on your system:
-
-### Git
+Ensure you have Git and GNU Stow installed on your system:
 
 ```
-pacman -S git
-```
-
-### Stow
-
-```
-pacman -S stow
+pacman -S git stow
 ```
 
 ## Installation
