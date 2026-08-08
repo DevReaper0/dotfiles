@@ -4,11 +4,10 @@ local opacities = {
 	["Slack"] = "0.90",
 	["Spotify"] = "0.80",
 
-	["kitty"] = "0.85",
-	["Alacritty"] = "0.85",
-	["foot"] = "0.85",
-	["org.wezfurlong.wezterm"] = "0.85",
-	["tilix"] = "0.85",
+	["kitty"] = "0.92",
+	["Alacritty"] = "0.92",
+	["com.mitchellh.ghostty"] = "0.92",
+	-- ["foot"] = "0.92", -- Blur only works if the alpha is set in foot's own config.
 }
 
 -- Window classes to explicitly tile.

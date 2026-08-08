@@ -1,0 +1,10 @@
+theme = dark:catppuccin-macchiato.conf,light:catppuccin-latte.conf
+
+font-family = JetBrainsMono Nerd Font
+
+window-padding-x = 10
+window-padding-y = 10
+window-padding-balance = true
+
+keybind = ctrl+t=new_tab
+keybind = ctrl+w=close_tab
